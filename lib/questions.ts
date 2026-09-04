@@ -1,0 +1,36 @@
+export type Key='self'|'people'|'create'|'aesthetic'|'language'|'logic'|'space'|'nature'|'body'|'music';
+export type Option={text:string;scores:Partial<Record<Key,number>>};
+export type Question={scene:string;title:string;options:Option[]};
+const o=(text:string,a:Key,b?:Key):Option=>({text,scores:{[a]:3,...(b?{[b]:1}:{})}});
+export const questions:Question[]=[
+ {scene:'陌生任务',title:'收到一个从没做过的项目时，你通常先做什么？',options:[o('先找一个安静角落，弄清自己真正想解决的问题','self','logic'),o('问清相关人的期待，理解他们最在意什么','people','language'),o('快速做一个粗糙原型，看看新想法能不能成立','create','body'),o('拆成步骤、条件和风险，画出完整路径','logic','space')]},
+ {scene:'空白周末',title:'突然多出半天空闲，你更容易走向哪里？',options:[o('带着耳机散步，让思绪慢慢沉下来','self','music'),o('逛展、书店或有设计感的小店','aesthetic','space'),o('约一个很久没见的人聊聊近况','people','language'),o('去公园、郊外或市场观察真实生活','nature','body')]},
+ {scene:'团队分歧',title:'讨论陷入僵局时，你最可能贡献什么？',options:[o('听出每个人没说出口的顾虑','people','self'),o('把争论点整理成可以验证的假设','logic','language'),o('提出一个没人想过的第三种方案','create','space'),o('让大家先动手试一个最小版本','body','logic')]},
+ {scene:'信息洪流',title:'面对一大堆杂乱材料，你会先注意什么？',options:[o('观点之间有没有矛盾或因果断层','logic','language'),o('整体排版、层次和视觉节奏','aesthetic','space'),o('反复出现的词语和叙事线索','language','self'),o('哪些细节和现实环境发生了变化','nature','logic')]},
+ {scene:'朋友低落',title:'朋友说“我没事”，你的第一反应更接近？',options:[o('从语气和停顿判断对方真实感受','people','music'),o('给对方空间，同时观察自己的担心从哪来','self','people'),o('换一种轻松的说法，帮对方打开话题','language','create'),o('陪对方走走或做点具体的事情','body','people')]},
+ {scene:'房间改造',title:'如果只改一处让房间更舒服，你会选择？',options:[o('调整色彩、材质与灯光氛围','aesthetic','space'),o('重新规划动线和物品的位置','space','logic'),o('亲手做一个真正好用的小物件','body','create'),o('增加植物、自然光或可以呼吸的角落','nature','aesthetic')]},
+ {scene:'学习新技能',title:'怎样学习会让你最快进入状态？',options:[o('直接跟着做，在动作里找到感觉','body','self'),o('先理解原理，再建立自己的知识框架','logic','space'),o('把它讲给别人听或写成一页笔记','language','people'),o('用图形、位置和结构把内容画出来','space','aesthetic')]},
+ {scene:'陌生街区',title:'走过一条从未来过的街，你最容易记住什么？',options:[o('树木、气味、光线和天气变化','nature','aesthetic'),o('道路方向、建筑位置和转角关系','space','logic'),o('路人的状态以及店主之间的互动','people','self'),o('招牌、橱窗与整条街的色彩气质','aesthetic','create')]},
+ {scene:'公开分享',title:'准备一场十分钟分享，你最想负责哪部分？',options:[o('把故事讲得准确、有起伏、让人记住','language','music'),o('观察听众反应，随时调整表达方式','people','self'),o('设计画面、字体与整体呈现质感','aesthetic','space'),o('核对论据和结论是否经得起追问','logic','language')]},
+ {scene:'旅行计划',title:'规划一趟旅行时，哪一步最让你投入？',options:[o('在地图上组合路线和时间距离','space','logic'),o('研究当地人的生活方式与小众故事','people','nature'),o('寻找自然季节与独特地貌','nature','space'),o('设计一个与普通攻略不同的主题','create','aesthetic')]},
+ {scene:'电影余韵',title:'看完一部好电影，什么会在你脑中停留最久？',options:[o('画面构图、服装和光影质感','aesthetic','space'),o('一句对白或人物如何讲述自己','language','self'),o('配乐进入的时机和情绪节奏','music','people'),o('角色选择背后的心理动机','people','self')]},
+ {scene:'效率瓶颈',title:'重复工作越来越慢，你会怎样改变它？',options:[o('找出最耗时的节点，重新设计流程','logic','space'),o('尝试完全不同的工具或方法','create','logic'),o('亲手操作几遍，找到动作上的卡点','body','self'),o('观察自己在什么时候最容易分心','self','logic')]},
+ {scene:'陌生聚会',title:'进入一个大多不认识人的聚会，你通常会？',options:[o('先观察谁和谁熟、现场是什么气氛','people','self'),o('找到一个话题，主动和身边的人聊起来','language','people'),o('注意音乐、灯光和空间带来的感受','aesthetic','music'),o('帮忙布置、递东西，让自己自然参与','body','people')]},
+ {scene:'作品完成',title:'做完一个作品，哪一刻最令你满足？',options:[o('它呈现了一个只有我会想到的角度','create','self'),o('每个细节终于形成统一的气质','aesthetic','space'),o('实际使用时顺手、有效、经得住操作','body','logic'),o('别人准确理解了我想表达的东西','language','people')]},
+ {scene:'一首新歌',title:'第一次听一首歌，你最先捕捉到什么？',options:[o('鼓点、速度以及身体想跟随的节拍','music','body'),o('声音营造出的颜色和画面感','aesthetic','space'),o('歌词怎样组织情绪和故事','language','self'),o('它让我想起了自己的哪段经历','self','music')]},
+ {scene:'重要选择',title:'面对两个都不错的机会，你更信任什么？',options:[o('它是否符合我长期看重的东西','self','logic'),o('比较收益、代价和未来可能性','logic','space'),o('和了解我的人谈谈，听他们怎么看我','people','self'),o('哪个选择让我产生更多新设想','create','self')]},
+ {scene:'模糊需求',title:'对方只说“做得高级一点”，你会怎么开始？',options:[o('找视觉案例，确认对方说的质感是什么','aesthetic','people'),o('追问使用场景、受众与真正目标','people','logic'),o('写出几种不同语气的表达让对方选择','language','create'),o('先做三个方向各异的快速样稿','create','body')]},
+ {scene:'桌面整理',title:'整理一堆文件时，你更自然的方式是？',options:[o('按用途、频率和优先级建立规则','logic','self'),o('用位置和层级让结构一眼可见','space','aesthetic'),o('保留让我有情感或灵感的内容','self','create'),o('观察哪些内容已经过时或发生变化','nature','logic')]},
+ {scene:'活动现场',title:'旁观一场活动，你最容易发现什么？',options:[o('谁被忽略了，谁在努力融入','people','self'),o('流程在哪里拥堵或让人困惑','logic','space'),o('场地动线是否自然、区域是否好找','space','body'),o('现场氛围为什么没有达到预期','aesthetic','music')]},
+ {scene:'记忆方法',title:'要记住一段重要内容，哪种方式对你最有效？',options:[o('把它改写成自己的话并讲出来','language','self'),o('边走边背，配合动作或手势','body','music'),o('设置节拍、押韵或声音提示','music','language'),o('画成结构图并标记彼此位置','space','logic')]},
+ {scene:'内容创作',title:'策划一条小红书内容时，你最想先做哪一步？',options:[o('找到一个意外但真实的切入角度','create','self'),o('想清标题和文字怎样抓住情绪','language','people'),o('确定封面色彩、版式和画面风格','aesthetic','space'),o('研究读者最常问什么、最担心什么','people','logic')]},
+ {scene:'走进自然',title:'来到一片安静的树林，你最想做什么？',options:[o('观察植物、声音和季节留下的细节','nature','music'),o('沿着小路行走，用身体感受地形','body','space'),o('停下来辨认此刻内心的变化','self','nature'),o('拍下光影和色彩最动人的瞬间','aesthetic','create')]},
+ {scene:'动手组装',title:'拿到一件需要组装的东西，你通常？',options:[o('先试着动手，在反馈里调整','body','logic'),o('先研究结构，想象每个部件的位置','space','logic'),o('仔细阅读说明，确认步骤没有歧义','language','logic'),o('想想能否改成更方便或有趣的样子','create','body')]},
+ {scene:'解释概念',title:'怎样向别人说明一个复杂概念最像你？',options:[o('用一个准确的故事或生活比喻','language','create'),o('根据对方的表情及时换一种说法','people','language'),o('画出关系、层级和变化过程','space','logic'),o('直接示范一遍，让对方跟着操作','body','people')]},
+ {scene:'恢复能量',title:'连续专注很久后，什么最能让你恢复？',options:[o('活动身体，让呼吸和肌肉重新舒展','body','self'),o('到户外看看树、天空或真实的远处','nature','aesthetic'),o('听几首熟悉的歌，让节奏带走疲惫','music','self'),o('独处一会，弄明白自己现在需要什么','self','nature')]},
+ {scene:'体验评价',title:'第一次使用一个新产品，你最先判断什么？',options:[o('看起来是否协调，有没有独特气质','aesthetic','create'),o('功能逻辑是否清楚、操作是否高效','logic','body'),o('它有没有理解使用者的真实处境','people','self'),o('拿在手里是否自然，反馈是否及时','body','aesthetic')]},
+ {scene:'临时发言',title:'突然被请上台讲两分钟，你最依靠什么？',options:[o('迅速找到一句核心观点组织语言','language','logic'),o('感受现场气氛，和听众建立连接','people','music'),o('回到真实体验，说出自己的判断','self','language'),o('用节奏、停顿和声音稳住全场','music','body')]},
+ {scene:'趋势判断',title:'发现一个突然流行的趋势，你会如何判断它？',options:[o('找数据和反例，看它是否只是噪声','logic','self'),o('观察真实生活里哪些细节正在变化','nature','people'),o('听不同人如何谈论以及情绪从何而来','people','language'),o('思考能否把它重组为一个新方向','create','logic')]},
+ {scene:'项目收尾',title:'合作项目结束时，你最在意留下什么？',options:[o('彼此仍然信任，下次愿意继续合作','people','self'),o('一套清楚、可复用的工作方法','logic','language'),o('一件完成度高、让人愿意展示的作品','aesthetic','create'),o('完整记录关键决定和经验教训','language','logic')]},
+ {scene:'未来画面',title:'想象三年后的生活，哪个画面最让你期待？',options:[o('更了解自己，也能自主安排时间','self','nature'),o('持续创造有个人印记的作品','create','aesthetic'),o('与喜欢的人合作并真实影响他们','people','language'),o('搭建起一个稳定、高效运转的系统','logic','space')]},
+];
