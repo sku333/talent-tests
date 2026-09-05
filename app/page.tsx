@@ -1,6 +1,6 @@
 'use client';
 import { useEffect,useMemo,useRef,useState } from 'react';
-import { ArrowDown,Check,Compass,Leaf,RotateCcw,Sparkles } from 'lucide-react';
+import { ArrowDown,Check,Leaf,RotateCcw,Sparkles } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { questions,type Key } from '@/lib/questions';
 
@@ -33,7 +33,7 @@ export default function Home(){
  const restart=()=>{track('restart_test');setAnswers([]);setActive(0);startedAt.current=Date.now();setStage('quiz');scrollTo({top:0})};
  useEffect(()=>{if(stage!=='result'||!identity.current.id)return;track('test_complete');track('report_view');void fetch('/api/result',{method:'POST',headers:{'content-type':'application/json'},body:JSON.stringify({anonymousId:identity.current.id,typeName:type,top:top.map(x=>x.d[1]),scores,durationSeconds:Math.round((Date.now()-startedAt.current)/1000)})})},[stage]);
 
- if(stage==='home')return <main className="shell autumn"><nav><div className="brand"><span className="brand-mark"><Leaf/></span>拾光天赋</div><span className="nav-note">一封写给自己的秋日回信</span></nav><section className="hero"><div className="eyebrow"><Sparkles/>30 个生活片段 · 约 6 分钟</div><h1>那些做起来<br/><em>毫不费力的事，</em><br/>藏着你的天赋。</h1><p className="lead">不是替你决定该做什么，而是从真实的选择里，拾起十种能力留下的线索。</p><Button onClick={start} className="primary-cta">开始拾取我的线索 <ArrowDown/></Button><p className="privacy"><Check/>无需登录 · 仅记录匿名进度与结果摘要</p><div className="sun-print"><span>10</span><p>TALENT<br/>CLUES</p>{['观察','表达','创造','感知'].map((x,i)=><i key={x} className={`seed s${i}`}>{x}</i>)}</div></section><footer>用于自我探索与娱乐参考，不构成科学诊断或职业结果保证。</footer></main>;
+ if(stage==='home')return <main className="shell autumn"><nav><div className="brand"><span className="brand-mark"><Leaf/></span>拾光天赋</div><span className="nav-note">一封写给自己的秋日回信</span></nav><section className="hero"><div className="eyebrow"><Sparkles/>30 个生活片段 · 约 6 分钟</div><h1>那些做起来<br/><em>毫不费力的事，</em><br/>藏着你的天赋。</h1><p className="lead">不是替你决定该做什么，而是从真实的选择里，拾起十种能力留下的线索。</p><Button onClick={start} className="primary-cta">开始拾取我的线索 <ArrowDown/></Button><div className="sun-print"><span>10</span><p>TALENT<br/>CLUES</p>{['观察','表达','创造','感知'].map((x,i)=><i key={x} className={`seed s${i}`}>{x}</i>)}</div></section><footer>用于自我探索与娱乐参考，不构成科学诊断或职业结果保证。</footer></main>;
 
  if(stage==='quiz')return <main className="quiz-scroll"><header className="quiz-nav"><button onClick={()=>setStage('home')}>退出</button><div className="brand small"><span className="brand-mark"><Leaf/></span>拾光天赋</div><span>{Math.min(active+1,30)} / 30</span><div className="progress"><i style={{width:`${(active+1)/30*100}%`}}/></div></header><div className="question-stream">{questions.map((q,qi)=><section key={qi} ref={el=>{sections.current[qi]=el}} className={`question-panel ${qi===active?'is-active':''} ${answers[qi]!==undefined?'is-answered':''}`}><div className="question-inner"><p className="scene">{String(qi+1).padStart(2,'0')} · {q.scene}</p><h2>{q.title}</h2><p className="hint">凭第一反应选择，没有标准答案</p><div className="options">{q.options.map((o,oi)=><button key={oi} disabled={qi>active} className={answers[qi]===oi?'selected':''} onClick={()=>choose(qi,oi)}><span>{String.fromCharCode(65+oi)}</span><b>{o.text}</b><Check/></button>)}</div>{qi<29&&answers[qi]!==undefined&&<p className="continue"><ArrowDown/>下一段正在展开</p>}</div></section>)}</div></main>;
 
