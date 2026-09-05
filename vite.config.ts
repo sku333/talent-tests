@@ -5,7 +5,7 @@ import { defineConfig } from 'vite';
 import hostingConfig from './.openai/hosting.json';
 
 const SITE_CREATOR_PLACEHOLDER_DATABASE_ID =
-  '00000000-0000-4000-8000-000000000000';
+  '99109b25-9d18-49d3-850d-67d6384aaf11';
 
 const { d1, r2 } = hostingConfig;
 
