@@ -4,6 +4,8 @@ import { ArrowDown,Briefcase,Check,Compass,Heart,Leaf,Lightbulb,Map,RotateCcw,Sp
 import { Button } from '@/components/ui/button';
 import { questions,type Key } from '@/lib/questions';
 
+const API_BASE='https://talent-tests-d5gk2ui6g78f773d0-1472636073.ap-shanghai.app.tcloudbase.com/api';
+
 const dims=[
  ['self','内省','内省','敏锐捕捉自己的情绪、动机与价值排序。','反复审视自己时，可能延迟行动。','独立判断、长期成长与价值一致的环境。',['生涯咨询','用户研究','内容策划']],
  ['people','人际','人际','读懂关系中的微妙信号，让人感到被理解。','容易过度照顾他人感受，忽略自己的边界。','高协作、需要理解用户或团队氛围的场景。',['人力资源','客户成功','心理服务']],
@@ -39,14 +41,14 @@ function Radar({values}:{values:number[]}){const p=(i:number,r:number)=>`${150+M
 export default function Home(){
  const [stage,setStage]=useState<'home'|'quiz'|'result'>('home'),[active,setActive]=useState(0),[answers,setAnswers]=useState<number[]>([]);
  const sections=useRef<(HTMLElement|null)[]>([]),startedAt=useRef(Date.now()),identity=useRef({id:'',source:'direct'});
- const track=(eventName:string)=>{if(identity.current.id)void fetch('/api/track',{method:'POST',headers:{'content-type':'application/json'},body:JSON.stringify({anonymousId:identity.current.id,eventName,source:identity.current.source}),keepalive:true})};
+ const track=(eventName:string)=>{if(identity.current.id)void fetch(`${API_BASE}/track`,{method:'POST',headers:{'content-type':'application/json'},body:JSON.stringify({anonymousId:identity.current.id,eventName,source:identity.current.source}),keepalive:true})};
  useEffect(()=>{let id=localStorage.getItem('weiguang_anonymous_id');if(!id){id=crypto.randomUUID();localStorage.setItem('weiguang_anonymous_id',id)}identity.current={id,source:new URLSearchParams(location.search).get('source')?.slice(0,80)||'direct'};track('page_view')},[]);
  const scores=useMemo(()=>{const raw=Object.fromEntries(keys.map(k=>[k,0])) as Record<Key,number>;answers.forEach((a,i)=>{if(a===undefined)return;Object.entries(questions[i].options[a].scores).forEach(([k,v])=>raw[k as Key]+=v||0)});return dims.map(d=>Math.round(35+raw[d[0]]/dimensionMax[d[0]]*65))},[answers]);
  const ranked=dims.map((d,i)=>({d,score:scores[i]})).sort((a,b)=>b.score-a.score),top=ranked.slice(0,3),low=ranked.slice(-2).reverse(),baseType=personas[top[0].d[0]][0],type=baseType,path=development[top[0].d[0]],careerDirections=top.flatMap(x=>x.d[6].map(name=>({name,dimension:x.d[1],reason:x.d[3]}))),priorityCareers=top.map(x=>({name:x.d[6][0],dimension:x.d[1],reason:x.d[3]})),role=workplaceRoles[top[0].d[0]];
  const start=()=>{startedAt.current=Date.now();track('test_start');setStage('quiz');setTimeout(()=>scrollTo({top:0}),0)};
  const choose=(q:number,a:number)=>{const next=[...answers];next[q]=a;setAnswers(next);if([9,19,29].includes(q))track(`progress_${q+1}`);if(q===29){setTimeout(()=>{setStage('result');scrollTo({top:0,behavior:'instant'})},520);return}setActive(q+1);setTimeout(()=>sections.current[q+1]?.scrollIntoView({behavior:'smooth',block:'start'}),260)};
  const restart=()=>{track('restart_test');setAnswers([]);setActive(0);startedAt.current=Date.now();setStage('quiz');scrollTo({top:0})};
- useEffect(()=>{if(stage!=='result'||!identity.current.id)return;track('test_complete');track('report_view');void fetch('/api/result',{method:'POST',headers:{'content-type':'application/json'},body:JSON.stringify({anonymousId:identity.current.id,typeName:type,top:top.map(x=>x.d[1]),scores,durationSeconds:Math.round((Date.now()-startedAt.current)/1000)})})},[stage]);
+ useEffect(()=>{if(stage!=='result'||!identity.current.id)return;track('test_complete');track('report_view');void fetch(`${API_BASE}/result`,{method:'POST',headers:{'content-type':'application/json'},body:JSON.stringify({anonymousId:identity.current.id,typeName:type,top:top.map(x=>x.d[1]),scores,durationSeconds:Math.round((Date.now()-startedAt.current)/1000)})})},[stage]);
 
  if(stage==='home')return <main className="shell autumn"><section className="hero hero-clean"><div className="eyebrow"><Sparkles/>30 个真实情境 · 十维天赋探索 · 约 6 分钟</div><h1>灵魂的欲望<br/>是命运的先知</h1><p className="lead">有些事情让你迅速进入状态，有些能力即使没有被提醒，也会自然出现。沿着这些真实反应，发现你更容易发光的工作方式与发展方向。</p><p className="manifesto">别再只用不擅长的方式证明自己。</p><Button onClick={start} className="primary-cta">开启我的天赋图谱 <ArrowDown/></Button><div className="talent-ribbon">{dims.map(d=><span key={d[0]}>{d[1]}</span>)}</div><div className="sun-print"><span>10</span><p>TALENT<br/>INSTINCTS</p>{['感知','优势','职业','方向'].map((x,i)=><i key={x} className={`seed s${i}`}>{x}</i>)}</div></section><footer>本测试用于自我探索与娱乐参考，不构成心理测量、科学诊断或职业结果保证。</footer></main>;
 
